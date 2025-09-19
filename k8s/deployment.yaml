@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: curator-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curator-api
+  template:
+    metadata:
+      labels:
+        app: curator-api
+    spec:
+      containers:
+        - name: curator-api
+          image: curator-api:latest
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: config
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+      volumes:
+        - name: config
+          configMap:
+            name: curator-api-config
